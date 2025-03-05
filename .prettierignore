@@ -1,0 +1,13 @@
+# Configuration files
+tsconfig.json
+package.json
+pnpm-lock.yaml
+
+# Dependency directories
+node_modules/
+
+# TypeScript generated target
+dist
+
+# Document
+README.md

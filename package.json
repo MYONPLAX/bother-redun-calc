@@ -1,0 +1,21 @@
+{
+  "name": "bother-redun-calc",
+  "version": "1.0.0",
+  "description": "Reduntant calculator",
+  "main": "dist/tsc/main.js",
+  "type": "module",
+  "scripts": {
+    "format": "pnpm prettier . --write",
+    "test": "node dist/tsc/test.js",
+    "tsc-build": "pnpm exec tsc --project tsconfig.json",
+    "build": "pnpm tsc --project tsconfig.json --noEmit && node esbuild.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "esbuild": "^0.25.0",
+    "prettier": "^3.5.3",
+    "typescript": "^5.8.2"
+  }
+}
