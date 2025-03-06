@@ -278,13 +278,22 @@ export default class Calculator {
       }
     };
 
-    const fractLength = (numeric: number): number => {
-      const str = Math.abs(numeric).toString(); // Remove minus
-      return str.includes('.') ? str.length - str.indexOf('.') - 1 : 0; // Remove `.`
+    /**
+     * Calculate length of after decimal separator.
+     * @param numeric Number to be measured
+     * @returns Length of after decimal separator
+     */
+    const afterDSLength = (numeric: number): number => {
+      const DS_LENGTH = 1; // Length of decimal separator (DS)
+      const str = Math.abs(numeric).toString(); // Remove minus sign
+      const integerLength = str.indexOf('.') + DS_LENGTH; // Length of integer and DS
+      return str.includes('.') ? str.length - integerLength : 0; // Length of after DS
     };
 
-    const checkScale = (numeric: number, scale: number) =>
-      fractLength(numeric) > scale ? numeric.toPrecision(scale) : numeric;
+    const checkScale = (numeric: number, scale: number): string =>
+      afterDSLength(numeric) > scale
+        ? numeric.toFixed(scale)
+        : numeric.toString();
 
     if (this.error.hasError) return this; // Skip this function;
 
@@ -310,7 +319,7 @@ export default class Calculator {
           }
         }
       }
-      this.result = checkScale(operandStack.pop()!, 10).toString();
+      this.result = checkScale(operandStack.pop()!, 10);
     }
     return this;
   }
