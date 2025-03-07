@@ -186,6 +186,9 @@ export default class Calculator {
           break;
         case Type.Rp:
           --depth;
+          if (prevToken.match(Type.Lp)) {
+            return this.catchError(ErrorNo.InvalidToken, FUNC_NAME);
+          }
           break;
       }
     }
