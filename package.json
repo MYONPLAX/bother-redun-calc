@@ -6,6 +6,7 @@
   "type": "module",
   "scripts": {
     "format": "pnpm prettier . --write",
+    "start": "node dist/tsc/main.js",
     "test": "node dist/tsc/test.js",
     "tsc-build": "pnpm exec tsc --project tsconfig.json",
     "build": "pnpm tsc --project tsconfig.json --noEmit && node esbuild.js"
@@ -14,6 +15,7 @@
   "author": "",
   "license": "MIT",
   "devDependencies": {
+    "@types/node": "^22.13.9",
     "esbuild": "^0.25.0",
     "prettier": "^3.5.3",
     "typescript": "^5.8.2"
