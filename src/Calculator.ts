@@ -27,7 +27,8 @@ export default class Calculator {
       .convertRPN()
       .calculateRPN()
       .removeTrailingZero();
-    return this.result;
+
+    return this.error.hasError ? this.error.outputError() : this.result;
   }
 
   private catchError(error: ErrorNo, func: string): Calculator {

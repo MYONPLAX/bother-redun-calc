@@ -51,7 +51,9 @@ export default class ErrorInfo {
     const getBaseMessage = (): string => {
       switch (this.messageLang) {
         case Lang.Eng:
-          return 'Error';
+          return this.messageLevel === MessageLevel.Minimum
+            ? 'Error'
+            : 'Error ';
         case Lang.Jpn:
           return 'エラー';
       }
@@ -62,10 +64,10 @@ export default class ErrorInfo {
       : `: ${messageText}`;
 
     const functionPart: string = includeFunction
-      ? `[${this.errorFunction}()]`
+      ? ` [function ${this.errorFunction}()]`
       : '';
 
-    return getBaseMessage(), errorPart, functionPart;
+    return `${getBaseMessage()}${errorPart}${functionPart}`;
   }
 
   private getSimpleMessage(): string {

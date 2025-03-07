@@ -8,6 +8,6 @@ const rl = readline.createInterface({
 });
 
 rl.question('Formula: ', (formula) => {
-  console.log(calculate(formula, MessageLevel.Full, Lang.Jpn, 64));
+  console.log(calculate(formula, MessageLevel.Full, Lang.Eng, 64));
   rl.close();
 });
