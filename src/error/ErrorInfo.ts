@@ -84,7 +84,9 @@ export default class ErrorInfo {
         )
       ) {
         return 2;
-      } else if (errorNumber === ErrorNo.ZeroDivide) {
+      } else if (
+        inRangeAB(errorNumber, ErrorNo.ZeroDivide, ErrorNo.InvalidResult)
+      ) {
         return 3;
       } else {
         return 0;

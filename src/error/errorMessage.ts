@@ -26,6 +26,7 @@ export enum ErrorNo {
   InvalidOperator = 10,
   ParenthesisNotFound = 11,
   ZeroDivide = 12,
+  InvalidResult = 13,
 }
 
 // prettier-ignore
@@ -34,7 +35,7 @@ const ERROR_MESSAGE = {
     { eng: "Unknown error", jpn: "未知のエラー" }, // Index 0 (errorNo: _)
     { eng: "Input error", jpn: "入力エラー" }, // Index 1 (errorNo: 1-2)
     { eng: "Syntax error", jpn: "構文エラー" }, // Index 2 (errorNo: 3-11)
-    { eng: "Calculate error", jpn: "計算エラー" }, // Index 3 (errorNo: 12)
+    { eng: "Calculate error", jpn: "計算エラー" }, // Index 3 (errorNo: 12-13)
   ] as IntfMessage[],
   MEDIUM: [
     { eng: "Unknown error", jpn: "未知のエラーです" }, // Index 0 (errorNo: _)
@@ -45,6 +46,7 @@ const ERROR_MESSAGE = {
     { eng: "Invalid operator", jpn: "無効な演算子があります" }, // Index 5 (errorNo: 10)
     { eng: "() is not found", jpn: "対応する () がありません" }, // Index 6 (errorNo: 11)
     { eng: "Zero divide", jpn: "ゼロ除算はできません" }, // Index 7 (errorNo: 12)
+    { eng: "Invalid Result", jpn: "計算結果が無効です" }, // Index 8 (errorNo: 13)
   ] as IntfMessage[],
   FULL: [
     { eng: "Unknown error", jpn: "未知のエラーです" }, // Index 0 (errorNo: _)
@@ -60,6 +62,7 @@ const ERROR_MESSAGE = {
     { eng: "Invalid operator", jpn: "この演算子は使用できません" }, // Index 10 (errorNo: 10)
     { eng: "() is not found", jpn: "対応する () が見つかりません" }, // Index 11 (errorNo: 11)
     { eng: "Zero divide", jpn: "ゼロ除算はできません" }, // Index 12 (errorNo: 12)
+    { eng: "Result is not a number", jpn: "計算結果が数値ではありません" }, // Index 13 (errorNo: 13)
   ] as IntfMessage[],
   MINIMUM: [{ eng: "Error", jpn: "エラー" }] as IntfMessage[],
 } as const;

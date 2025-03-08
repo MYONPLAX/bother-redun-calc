@@ -311,6 +311,9 @@ export default class Calculator {
           );
           if (result.Ok !== undefined) {
             operandStack.push(result.Ok);
+            if (isNaN(result.Ok)) {
+              return this.catchError(ErrorNo.InvalidResult, FUNC_NAME);
+            }
           } else if (result.Err !== undefined) {
             return this.catchError(result.Err, FUNC_NAME);
           }
