@@ -22,7 +22,7 @@ export default class Calculator {
 
   public run(input: string): string {
     this.scanInput(input)
-      .formatMinus()
+      .formatSign()
       .checkSyntax()
       .convertRPN()
       .calculateRPN()
@@ -93,19 +93,48 @@ export default class Calculator {
     return this;
   }
 
-  private formatMinus(): Calculator {
+  private formatSign(): Calculator {
     const formula = this.formula;
 
-    if (this.error.hasError || formula.length < 3) return this; // Skip this function;
+    if (this.error.hasError || formula.length < 2) return this; // Skip this function;
 
-    for (let index = 0; index < formula.length - 2; ++index) {
+    const insertParentheses = (
+      index: number,
+      signToken: Token,
+      numToken: Token
+    ): void => {
+      formula.splice(
+        index - 1,
+        2,
+        new Token('(', Type.Lp, 3),
+        new Token('0', Type.Num, 0),
+        signToken,
+        numToken,
+        new Token(')', Type.Rp, 3)
+      );
+    };
+
+    for (let index = 0; index < formula.length; ++index) {
       if (
-        formula[index].match(Type.Sub) &&
-        formula[index + 1].match(Type.Sub) &&
-        formula[index + 2].match(Type.Num)
+        index === 1 &&
+        formula[0].matchAll(new Set([Type.Add, Type.Sub])) &&
+        formula[1].match(Type.Num)
       ) {
-        formula.splice(index + 1, 0, new Token('0', Type.Num, 0));
-        ++index;
+        insertParentheses(index, formula[0], formula[1]);
+        index = 4;
+        continue;
+      }
+
+      if (
+        index >= 2 &&
+        formula[index].match(Type.Num) &&
+        formula[index - 1].isSign() &&
+        formula[index - 2].matchAll(
+          new Set([Type.Add, Type.Sub, Type.Mul, Type.Div, Type.Lp])
+        )
+      ) {
+        insertParentheses(index, formula[index - 1], formula[index]);
+        index += 3;
       }
     }
     return this;

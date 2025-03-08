@@ -15,6 +15,10 @@ export default class Token {
     return types.has(this.type);
   }
 
+  public isSign() {
+    return this.matchAll(new Set([Type.Add, Type.Sub]));
+  }
+
   public isArithmetic() {
     return this.matchAll(new Set([Type.Add, Type.Sub, Type.Mul, Type.Div]));
   }
