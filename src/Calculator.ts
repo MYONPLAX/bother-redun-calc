@@ -115,11 +115,7 @@ export default class Calculator {
     };
 
     for (let index = 0; index < formula.length; ++index) {
-      if (
-        index === 1 &&
-        formula[0].matchAll(new Set([Type.Add, Type.Sub])) &&
-        formula[1].match(Type.Num)
-      ) {
+      if (index === 1 && formula[0].isSign() && formula[1].match(Type.Num)) {
         insertParentheses(index, formula[0], formula[1]);
         index = 4;
         continue;
@@ -129,9 +125,7 @@ export default class Calculator {
         index >= 2 &&
         formula[index].match(Type.Num) &&
         formula[index - 1].isSign() &&
-        formula[index - 2].matchAll(
-          new Set([Type.Add, Type.Sub, Type.Mul, Type.Div, Type.Lp])
-        )
+        formula[index - 2].isBeforeSign()
       ) {
         insertParentheses(index, formula[index - 1], formula[index]);
         index += 3;
@@ -209,7 +203,7 @@ export default class Calculator {
           break;
         case Type.Lp:
           ++depth;
-          if (prevToken.matchAll(new Set([Type.Num, Type.Rp]))) {
+          if (prevToken.matchAll([Type.Num, Type.Rp])) {
             return this.catchError(ErrorNo.InvalidTokenBeforeLp, FUNC_NAME);
           }
           break;
