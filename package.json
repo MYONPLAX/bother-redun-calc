@@ -6,9 +6,9 @@
   "type": "module",
   "scripts": {
     "format": "pnpm prettier . --write",
-    "start": "node dist/tsc/main.js",
-    "test": "node dist/tsc/test.js",
-    "tsc-build": "pnpm exec tsc --project tsconfig.json",
+    "dev": "node dist/dev/main.js",
+    "test": "node dist/dev/test.js",
+    "build-dev": "pnpm exec tsc --project tsconfig.json",
     "build": "pnpm tsc --project tsconfig.json --noEmit && node esbuild.js"
   },
   "keywords": [],
