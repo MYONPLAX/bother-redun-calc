@@ -1,11 +1,17 @@
-import { Type } from './Type.js';
+import { orderMap, tokenMap, Type } from './Type.js';
 
 export default class Token {
+  public readonly str: string;
+  public readonly order: number;
+
   constructor(
-    public readonly str: string,
     public readonly type: Type,
-    public readonly order: number
-  ) {}
+    numeric?: string
+  ) {
+    const token = tokenMap[type];
+    this.str = typeof token === 'function' ? token(numeric) : token;
+    this.order = orderMap[type];
+  }
 
   public match(type: Type): boolean {
     return this.type === type;

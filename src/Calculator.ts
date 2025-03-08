@@ -55,27 +55,27 @@ export default class Calculator {
       }
 
       if (!isEmpty(numeric)) {
-        this.formula.push(new Token(numeric.join(''), Type.Num, 0));
+        this.formula.push(new Token(Type.Num, numeric.join('')));
       }
 
       switch (character) {
         case '+':
-          this.formula.push(new Token('+', Type.Add, 1));
+          this.formula.push(new Token(Type.Add));
           break;
         case '-':
-          this.formula.push(new Token('-', Type.Sub, 1));
+          this.formula.push(new Token(Type.Sub));
           break;
         case '*':
-          this.formula.push(new Token('*', Type.Mul, 2));
+          this.formula.push(new Token(Type.Mul));
           break;
         case '/':
-          this.formula.push(new Token('/', Type.Div, 2));
+          this.formula.push(new Token(Type.Div));
           break;
         case '(':
-          this.formula.push(new Token('(', Type.Lp, 3));
+          this.formula.push(new Token(Type.Lp));
           break;
         case ')':
-          this.formula.push(new Token(')', Type.Rp, 3));
+          this.formula.push(new Token(Type.Rp));
           break;
         case '\n':
         case ' ':
@@ -88,7 +88,7 @@ export default class Calculator {
 
     if (numeric.length !== 0) {
       // Formula has only number
-      this.formula.push(new Token(numeric.join(''), Type.Num, 0));
+      this.formula.push(new Token(Type.Num, numeric.join('')));
     }
     return this;
   }
@@ -106,11 +106,11 @@ export default class Calculator {
       formula.splice(
         index - 1,
         2,
-        new Token('(', Type.Lp, 3),
-        new Token('0', Type.Num, 0),
+        new Token(Type.Lp),
+        new Token(Type.Num, '0'),
         signToken,
         numToken,
-        new Token(')', Type.Rp, 3)
+        new Token(Type.Rp)
       );
     };
 
