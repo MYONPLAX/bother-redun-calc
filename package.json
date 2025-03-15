@@ -1,6 +1,6 @@
 {
   "name": "bother-redun-calc",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Reduntant calculator",
   "main": "dist/tsc/main.js",
   "type": "module",
