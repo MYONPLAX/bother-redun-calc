@@ -22,7 +22,6 @@ export default class Calculator {
 
   public run(input: string): string {
     this.scanInput(input)
-      .formatSign()
       .checkSyntax()
       .convertRPN()
       .calculateRPN()
@@ -38,25 +37,43 @@ export default class Calculator {
 
   private scanInput(input: string): Calculator {
     const FUNC_NAME = 'scanInput';
-    const numeric: string[] = [];
+    const numericBuffer: string[] = [];
+    let lastToken: Token | null = null;
 
+    // Error: Formula is empty
     if (input.length < 1) {
       return this.catchError(ErrorNo.EmptyInput, FUNC_NAME);
     }
 
+    // Error: Formula is too long
     if (input.length > this.maxFormulaLength) {
       return this.catchError(ErrorNo.TooLongInput, FUNC_NAME);
     }
 
+    // Scan input formula
     for (const character of input) {
+      // Token is digit or decimal point
       if (isDigit(character) || character === '.') {
-        numeric.push(character);
+        numericBuffer.push(character);
         continue;
       }
 
-      if (!isEmpty(numeric)) {
-        this.formula.push(new Token(Type.Num, numeric.join('')));
+      if (!isEmpty(numericBuffer)) {
+        // Register numericBuffer to formula
+        this.formula.push(new Token(Type.Num, numericBuffer.join('')));
+        lastToken = this.formula.at(-1)!; // Update lastToken
       }
+
+      // Token is operator or sign
+      if (character === '+' || character === '-') {
+        // Token is sign
+        if (lastToken === null || lastToken.isBeforeSign()) {
+          numericBuffer.push(character);
+          continue;
+        }
+      }
+
+      numericBuffer.length = 0; // Clear numericBuffer
 
       switch (character) {
         case '+':
@@ -83,53 +100,12 @@ export default class Calculator {
         default:
           return this.catchError(ErrorNo.InvalidToken, FUNC_NAME);
       }
-      numeric.length = 0; // Clear numeric
+      lastToken = this.formula.at(-1)!; // update lastToken
     }
 
-    if (numeric.length !== 0) {
-      // Formula has only number
-      this.formula.push(new Token(Type.Num, numeric.join('')));
-    }
-    return this;
-  }
-
-  private formatSign(): Calculator {
-    const formula = this.formula;
-
-    if (this.error.hasError || formula.length < 2) return this; // Skip this function;
-
-    const insertParentheses = (
-      index: number,
-      signToken: Token,
-      numToken: Token
-    ): void => {
-      formula.splice(
-        index - 1,
-        2,
-        new Token(Type.Lp),
-        new Token(Type.Num, '0'),
-        signToken,
-        numToken,
-        new Token(Type.Rp)
-      );
-    };
-
-    for (let index = 0; index < formula.length; ++index) {
-      if (index === 1 && formula[0].isSign() && formula[1].match(Type.Num)) {
-        insertParentheses(index, formula[0], formula[1]);
-        index = 4;
-        continue;
-      }
-
-      if (
-        index >= 2 &&
-        formula[index].match(Type.Num) &&
-        formula[index - 1].isSign() &&
-        formula[index - 2].isBeforeSign()
-      ) {
-        insertParentheses(index, formula[index - 1], formula[index]);
-        index += 3;
-      }
+    // Formula has only number
+    if (numericBuffer.length !== 0) {
+      this.formula.push(new Token(Type.Num, numericBuffer.join('')));
     }
     return this;
   }
