@@ -1,5 +1,5 @@
 import { isDigit, isEmpty, toNumber } from './commonFunc.js';
-import { Type } from './token/Type.js';
+import { reverseTokenMap, Type } from './token/Type.js';
 import { ErrorNo } from './error/errorMessage.js';
 import Token from './token/Token.js';
 import ErrorInfo from './error/ErrorInfo.js';
@@ -75,30 +75,14 @@ export default class Calculator {
 
       numericBuffer.length = 0; // Clear numericBuffer
 
-      switch (character) {
-        case '+':
-          this.formula.push(new Token(Type.Add));
-          break;
-        case '-':
-          this.formula.push(new Token(Type.Sub));
-          break;
-        case '*':
-          this.formula.push(new Token(Type.Mul));
-          break;
-        case '/':
-          this.formula.push(new Token(Type.Div));
-          break;
-        case '(':
-          this.formula.push(new Token(Type.Lp));
-          break;
-        case ')':
-          this.formula.push(new Token(Type.Rp));
-          break;
-        case '\n':
-        case ' ':
-          break;
-        default:
+      if (!(character === '\n' || character === ' ')) {
+        const type = reverseTokenMap[character];
+
+        if (type !== undefined) {
+          this.formula.push(new Token(type));
+        } else {
           return this.catchError(ErrorNo.InvalidToken, FUNC_NAME);
+        }
       }
       lastToken = this.formula.at(-1)!; // update lastToken
     }

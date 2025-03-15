@@ -18,6 +18,12 @@ export const tokenMap: Record<Type, string | ((numeric?: string) => string)> = {
   [Type.Num]: (numeric?: string) => numeric ?? '0',
 };
 
+export const reverseTokenMap: Record<string, Type> = Object.fromEntries(
+  Object.entries(tokenMap)
+    .filter(([__dirname, value]) => typeof value === 'string')
+    .map(([key, value]) => [value, Number(key) as Type])
+);
+
 export const orderMap: Record<Type, number> = {
   [Type.Num]: 0,
   [Type.Add]: 1,
